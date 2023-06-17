@@ -8,6 +8,17 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello, docker!'
 
+@app.route('/insert')
+def insert_test():
+    mydb = mysql.connector.connect(
+        host="mysqldb",
+        user="root",
+        password="p@ssw0rd1",
+        database="inventory"
+    )
+    cursor = mydb.cursor("INSERT INTO widgets VALUES (Potato, A yummy vegetable.)")
+    cursor.close()
+
 @app.route('/widgets')
 def get_widgets():
     mydb = mysql.connector.connect(
