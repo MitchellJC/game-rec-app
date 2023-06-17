@@ -16,8 +16,13 @@ def insert_test():
         password="p@ssw0rd1",
         database="inventory"
     )
-    cursor = mydb.cursor("INSERT INTO widgets VALUES (Potato, A yummy vegetable.)")
+    cursor = mydb.cursor()
+    cursor.execute("INSERT INTO widgets VALUES ('Potato', 'A yummy vegetable.')")
     cursor.close()
+
+    mydb.commit()
+
+    return "insert"
 
 @app.route('/widgets')
 def get_widgets():
