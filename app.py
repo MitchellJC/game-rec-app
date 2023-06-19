@@ -1,22 +1,23 @@
 import mysql.connector
 import json
 import pickle
-import SVD
-import RecData
-from flask import Flask
-
-app = Flask(__name__)
+from SVD import SVDPredictor
+from RecData import RecData
+from flask import Flask, jsonify
 
 with open('model.pkl', 'rb') as file:
-    svd, data, train, val, test = pickle.load('model.pkl')
+    svd, data, train, val, test = pickle.load(file)
+
+app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return 'Hello, docker!'
 
-@app.route('/topn/<user_id>')
+@app.route('/topn/<user_id>', methods=['GET'])
 def get_topn(user_id):
-    return svd.top_n(user_id)
+    top_n = svd.top_n(int(user_id))
+    return str([data.index_to_title(index) for _, index in top_n])
 
 @app.route('/insert')
 def insert_test():

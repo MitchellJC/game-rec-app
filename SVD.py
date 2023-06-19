@@ -1,5 +1,5 @@
 from scipy.sparse.linalg import norm as sparse_norm
-from scipy.sparse import vstack, lil_array
+from scipy.sparse import vstack, lil_array, csr_array
 from collections import defaultdict
 import time
 import random
