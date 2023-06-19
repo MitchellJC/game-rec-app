@@ -1,12 +1,20 @@
 import mysql.connector
 import json
+import pickle
+import SVD
+import RecData
 from flask import Flask
 
 app = Flask(__name__)
+svd, data, train, val, test = pickle.load('model')
 
 @app.route('/')
 def hello_world():
     return 'Hello, docker!'
+
+@app.route('/topn/<user_id>')
+def get_topn(user_id):
+    return svd.top_n(user_id)
 
 @app.route('/insert')
 def insert_test():
