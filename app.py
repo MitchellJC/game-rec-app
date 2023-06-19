@@ -3,22 +3,24 @@ import json
 import pickle
 from SVD import SVDPredictor
 from RecData import RecData
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 with open('model.pkl', 'rb') as file:
     svd, data, train, val, test = pickle.load(file)
 
-app = Flask(__name__)
+app = Flask(__name__, '/templates')
 
 @app.route('/')
-def hello_world():
-    return 'Hello, docker!'
+def home():
+    return render_template('index.html')
 
 @app.route('/topn/<user_id>', methods=['GET'])
 def get_topn(user_id):
     top_n = svd.top_n(int(user_id))
     return str([data.index_to_title(index) for _, index in top_n])
 
+
+# Testing routes
 @app.route('/insert')
 def insert_test():
     mydb = mysql.connector.connect(
@@ -79,4 +81,4 @@ def db_init():
     return 'init database'
 
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0')
+    app.run(host='0.0.0.0', debug=True)
