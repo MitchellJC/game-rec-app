@@ -6,7 +6,9 @@ import RecData
 from flask import Flask
 
 app = Flask(__name__)
-svd, data, train, val, test = pickle.load('model')
+
+with open('model.pkl', 'rb') as file:
+    svd, data, train, val, test = pickle.load('model.pkl')
 
 @app.route('/')
 def hello_world():
