@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
   </head>
 
   <body>
-	<script src="index.js"></script>
+	
 
-    <form>
-        <label for="game-title">Game title:</label>
-        <input type="text" name="game-title">
-        <label for="like-box">like?</label>
-        <input type="checkbox" name="like-box">
-        <input type="submit" value="Submit">
-    </form>
+    <div class="pref-container">
+        <form class="pref-form" id="pref-form">
+            <label for="game-title">Game title:</label>
+            <input type="text" name="game-title">
+            <label for="like-box">like?</label>
+            <input type="checkbox" name="like-box">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
   </body>
+
+  <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </html>
