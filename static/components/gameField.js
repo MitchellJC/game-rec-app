@@ -11,11 +11,12 @@ class GameField extends HTMLElement {
         `<div>
             <button type="button" class="rem-pref">-</button>
             <label for="game-title${GameField.numGameFields + 1}">Game title:</label>
-            <input type="text" name="game-title" id="game-title${GameField.numGameFields + 1}">
+            <input type="text" name="game-title" id="game-title${GameField.numGameFields + 1}" class="game-title">
             <label for="dislike-option${GameField.numGameFields + 1}">Dislike</label>
             <input type="radio" name="like-box" id="dislike-option${GameField.numGameFields + 1}" value="dislike">
             <label for="like-option${GameField.numGameFields + 1}">Like</label>
             <input type="radio" name="like-box" id="like-option${GameField.numGameFields + 1}" value="like">
+            <div class="search-result"></div>
         </div>`;
     }
 
