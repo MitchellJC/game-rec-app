@@ -19,11 +19,11 @@ def home():
 
 @app.route('/search.<string:title>')
 def search(title):
-    return (str(data.search_title(title)[:10]), SUCCESS_CODE)
+    return (jsonify(data.search_title(title)[:10]), SUCCESS_CODE)
 
 @app.route('/search.')
 def empty_search():
-    return ('', SUCCESS_EMPTY)
+    return (jsonify([]), SUCCESS_EMPTY)
 
 @app.route('/topn/<user_id>', methods=['GET'])
 def get_topn(user_id):
