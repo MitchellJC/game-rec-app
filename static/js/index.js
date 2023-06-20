@@ -19,19 +19,18 @@ addNewPref.addEventListener("click", () => {
     }
 
     gameField.addEventListener("keyup", () => {
-        const gameTitle = gameField.getElementsByClassName("game-title").item(0);
-        const title = gameTitle.value;
-        refreshSearch(gameField, title);
+        refreshSearch(gameField);
     });
 })
 
-async function refreshSearch(gameField, title) {
+async function refreshSearch(gameField) {
+    const title = gameField.getElementsByClassName("game-title").item(0).value;
     const searchResult = gameField.getElementsByClassName("search-result").item(0);
+
     const response = await fetch(`/search.${title}`);
     const status = await response.status;
 
     searchResult.innerHTML = ""
-
     if (status == SUCCESS_EMPTY) {
         return;
     }
@@ -44,15 +43,17 @@ async function refreshSearch(gameField, title) {
         const prefNum = Object.keys(prefs).length
         const searchOption = document.createElement("button");
 
-        searchOption.addEventListener("click", () => selectOption(prefNum, id, title));
+        searchOption.addEventListener("click", () => selectOption(gameField, prefNum, id, title));
         searchOption.innerHTML = `${title}, ${id}`;
         searchResult.appendChild(searchOption);
     }
 }
 
-function selectOption(prefNum, id, title) {
+function selectOption(gameField, prefNum, id, title) {
+    const gameTitle = gameField.getElementsByClassName("game-title").item(0);
+    const searchResult = gameField.getElementsByClassName("search-result").item(0);
+
     searchResult.innerHTML = "";
     gameTitle.value = title;
     prefs[prefNum] = {'id': id, 'title': title};
-    console.log(prefs);
 }
