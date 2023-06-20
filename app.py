@@ -3,7 +3,10 @@ import json
 import pickle
 from SVD import SVDPredictor
 from RecData import RecData
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, Response
+
+SUCCESS_CODE = 200
+SUCCESS_EMPTY = 204
 
 with open('model.pkl', 'rb') as file:
     svd, data, train, val, test = pickle.load(file)
@@ -13,6 +16,14 @@ app = Flask(__name__, '/templates')
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/search.<string:title>')
+def search(title):
+    return (str(data.search_title(title)[:10]), SUCCESS_CODE)
+
+@app.route('/search.')
+def empty_search():
+    return ('', SUCCESS_EMPTY)
 
 @app.route('/topn/<user_id>', methods=['GET'])
 def get_topn(user_id):

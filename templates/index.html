@@ -9,18 +9,21 @@
   </head>
 
   <body>
-	
 
     <div class="pref-container">
         <form class="pref-form" id="pref-form">
             <label for="game-title">Game title:</label>
-            <input type="text" name="game-title">
+            <input type="text" name="game-title" id="game-title">
             <label for="like-box">like?</label>
             <input type="checkbox" name="like-box">
             <input type="submit" value="Submit">
         </form>
+        <div id="search-result">
+
+        </div>
     </div>
+
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
   </body>
 
-  <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </html>
