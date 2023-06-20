@@ -27,7 +27,7 @@ async function refreshSearch(title) {
         let title, id;
         [title, id] = results[i];
         const prefNum = Object.keys(prefs).length
-        const searchOption = document.createElement("div");
+        const searchOption = document.createElement("button");
 
         searchOption.addEventListener("click", () => selectOption(prefNum, id, title));
         searchOption.innerHTML = `${title}, ${id}`;
@@ -38,6 +38,6 @@ async function refreshSearch(title) {
 function selectOption(prefNum, id, title) {
     searchResult.innerHTML = "";
     gameTitle.value = title;
-    prefs[prefNum] = {'id': id, 'title': title, 'pref': 0};
+    prefs[prefNum] = {'id': id, 'title': title};
     console.log(prefs);
 }
