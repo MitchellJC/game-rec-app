@@ -3,8 +3,24 @@ const SUCCESS_EMPTY = 204
 const prefForm = document.getElementById("pref-form");
 const searchResult = document.getElementById("search-result");
 const gameTitle = document.getElementById("game-title");
+const addNewPref = document.getElementById("add-newpref");
 
 const prefs = {}
+
+addNewPref.addEventListener("click", () => {
+    const gameField = document.createElement("game-field");
+    prefForm.appendChild(gameField); // Must append before accessing children -- connectedCallback
+
+    const closeButtons = gameField.getElementsByClassName("rem-pref");
+    console.log(closeButtons)
+    for (const i in closeButtons) {
+        console.log(closeButtons[i])
+        const button = closeButtons.item(i);
+        button.addEventListener("click", () => {
+            gameField.remove()
+        })
+    }
+})
 
 prefForm.addEventListener("keyup", () => {
     var title = gameTitle.value;

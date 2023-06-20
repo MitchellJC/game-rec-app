@@ -12,21 +12,15 @@
 
     <div class="pref-container">
         <form class="pref-form" id="pref-form">
-            <label for="game-title">Game title:</label>
-            <input type="text" name="game-title" id="game-title">
-            <label for="dislike-option">Dislike</label>
-            <input type="radio" name="like-box" id="dislike-option" value="dislike">
-            <label for="like-option">Like</label>
-            <input type="radio" name="like-box" id="like-option" value="like">
-            <input type="submit" value="Submit">
         </form>
-       
-        <div id="search-result">
-
-        </div>
+        <button id="add-newpref">+</button>
+        <input type="submit" value="Submit">
+        <div id="search-result"></div>
     </div>
 
+    <script src="{{url_for('static', filename='components/gameField.js')}}"></script>
     <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    
   </body>
 
 </html>
