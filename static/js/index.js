@@ -5,12 +5,15 @@ const gameTitle = document.getElementById("game-title");
 const addNewPref = document.getElementById("add-newpref");
 
 const prefs = {}
+const gameFields = []
 
 addNewPref.addEventListener("click", () => {
     const gameField = document.createElement("game-field");
-    prefForm.appendChild(gameField); // Must append before accessing children -- connectedCallback
 
-    const closeButtons = gameField.getElementsByClassName("rem-pref");
+    // Must append before using children, need connectedCallback to run
+    prefForm.appendChild(gameField); 
+
+    const closeButtons = gameField.getElementsByClassName("rem-pref").item(0);
     for (const i in closeButtons) {
         const button = closeButtons.item(i);
         button.addEventListener("click", () => {
