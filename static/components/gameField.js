@@ -7,22 +7,25 @@ class GameField extends HTMLElement {
     }
 
     connectedCallback () {
+        this.id_ = GameField.numGameFields - 1;
+        this.gameId = null;
+        this.pref = null;
         this.innerHTML = 
         `<div>
             <button type="button" class="rem-pref">&#10005</button>
-            <label for="game-title${GameField.numGameFields - 1}">Game title:</label>
-            <input type="text" name="game-title" id="game-title${GameField.numGameFields - 1}" class="game-title">
-            <label for="dislike-option${GameField.numGameFields - 1}">Dislike</label>
-            <input type="radio" name="like-box${GameField.numGameFields - 1}" id="dislike-option${GameField.numGameFields - 1}" value="dislike">
-            <label for="like-option${GameField.numGameFields - 1}">Like</label>
-            <input type="radio" name="like-box${GameField.numGameFields - 1}" id="like-option${GameField.numGameFields - 1}" value="like">
+            <label for="game-title${this.id_}">Game title:</label>
+            <input type="text" name="game-title" id="game-title${this.id_}" class="game-title">
+            <label for="dislike-option${this.id_}">Dislike</label>
+            <input class="dislike-button" type="radio" name="like-box${this.id_}" id="dislike-option${this.id_}" value="dislike">
+            <label for="like-option${this.id_}">Like</label>
+            <input class="like-button" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like">
             <div class="search-result"></div>
         </div>`;
     }
 
-    disconnectedCallback () {
-        GameField.numGameFields--;
-    }
+    // disconnectedCallback () {
+    //     GameField.numGameFields--;
+    // }
 }
 
 if ('customElements' in window) {
