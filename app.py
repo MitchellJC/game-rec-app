@@ -3,7 +3,7 @@ import json
 import pickle
 from SVD import SVDPredictor
 from RecData import RecData
-from flask import Flask, jsonify, render_template, Response
+from flask import Flask, jsonify, render_template, request
 
 SUCCESS_CODE = 200
 SUCCESS_EMPTY = 204
@@ -30,6 +30,17 @@ def get_topn(user_id):
     top_n = svd.top_n(int(user_id))
     return str([data.index_to_title(index) for _, index in top_n])
 
+@app.route('/recs', methods=['POST'])
+def recs():
+    user_data = request.get_json()
+    prefs = [(int(index), pref) for index, pref in user_data.items()]
+    prefs = data.create_prefs(prefs)
+
+    svd._partial_batch_size = int(0)
+    svd.partial_fit(prefs)
+    top = svd.top_n(svd._num_users - 1)
+    recs = [(r, data.index_to_title(index)) for r, index in top]
+    return (jsonify(recs), SUCCESS_CODE)
 
 # Testing routes
 @app.route('/insert')

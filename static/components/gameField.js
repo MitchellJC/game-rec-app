@@ -9,7 +9,7 @@ class GameField extends HTMLElement {
     connectedCallback () {
         this.id_ = GameField.numGameFields - 1;
         this.gameId = null;
-        this.pref = null;
+        this.pref = 1;
         this.innerHTML = 
         `<div>
             <button type="button" class="rem-pref">&#10005</button>
@@ -18,14 +18,11 @@ class GameField extends HTMLElement {
             <label for="dislike-option${this.id_}">Dislike</label>
             <input class="dislike-button" type="radio" name="like-box${this.id_}" id="dislike-option${this.id_}" value="dislike">
             <label for="like-option${this.id_}">Like</label>
-            <input class="like-button" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like">
+            <input class="like-button" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like" checked>
             <div class="search-result"></div>
         </div>`;
     }
 
-    // disconnectedCallback () {
-    //     GameField.numGameFields--;
-    // }
 }
 
 if ('customElements' in window) {
