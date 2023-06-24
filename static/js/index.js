@@ -13,13 +13,12 @@ addNewPref.addEventListener("click", () => {
     // Must append before using children, need connectedCallback to run
     prefForm.appendChild(gameField); 
 
-    const closeButtons = gameField.getElementsByClassName("rem-pref").item(0);
-    for (const i in closeButtons) {
-        const button = closeButtons.item(i);
-        button.addEventListener("click", () => {
-            gameField.remove()
-        })
-    }
+    const closeButton = gameField.getElementsByClassName("rem-pref").item(0);
+    
+    closeButton.addEventListener("click", () => {
+        gameField.remove()
+    })
+    
 
     gameField.addEventListener("keyup", () => {
         refreshSearch(gameField);
@@ -46,7 +45,8 @@ async function refreshSearch(gameField) {
         const prefNum = Object.keys(prefs).length
         const searchOption = document.createElement("button");
 
-        searchOption.addEventListener("click", () => selectOption(gameField, prefNum, id, title));
+        searchOption.addEventListener("click", () => selectOption(gameField, 
+            prefNum, id, title));
         searchOption.innerHTML = `${title}, ${id}`;
         searchResult.appendChild(searchOption);
     }
