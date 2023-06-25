@@ -1,0 +1,19 @@
+.margin-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+    width: 100ch;
+    border-style: double;
+}
+
+.pref-container {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* .game-field {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+} */

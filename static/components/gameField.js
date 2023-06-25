@@ -11,7 +11,7 @@ class GameField extends HTMLElement {
         this.gameId = null;
         this.pref = 1;
         this.innerHTML = 
-        `<div>
+        `<div class="game-field">
             <button type="button" class="rem-pref">&#10005</button>
             <label for="game-title${this.id_}">Game title:</label>
             <input type="text" name="game-title" id="game-title${this.id_}" class="game-title">

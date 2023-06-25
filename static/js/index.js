@@ -60,6 +60,8 @@ function selectOption(gameField, id, title) {
  * 
  */
 async function generateRecs() {
+    recList.innerHTML = "";
+
     // Extract pref data from html elements
     const prefData = {};
     for (const i in gameFields) {
