@@ -14,7 +14,7 @@ class GameField extends HTMLElement {
         `<div class="game-field">
             <button type="button" class="rem-pref">&#10005</button>
             <label for="game-title${this.id_}">Game title:</label>
-            <input type="text" name="game-title" id="game-title${this.id_}" class="game-title">
+            <input type="text" name="game-title" id="game-title${this.id_}" class="game-title" required>
             <label for="dislike-option${this.id_}">Dislike</label>
             <input class="dislike-button" type="radio" name="like-box${this.id_}" id="dislike-option${this.id_}" value="dislike">
             <label for="like-option${this.id_}">Like</label>

@@ -3,9 +3,10 @@ const SUCCESS_EMPTY = 204
 const prefForm = document.getElementById("pref-form");
 const gameTitle = document.getElementById("game-title");
 const addNewPref = document.getElementById("add-newpref");
-const submitButton = document.getElementById("submit-button");
 const loadMsg = document.getElementById("load-msg");
+const noPrefMsg = document.getElementById("nopref-msg");
 const recList = document.getElementById("rec-list");
+const prefs = document.getElementById("prefs");
 
 const gameFields = {}
 
@@ -59,7 +60,14 @@ function selectOption(gameField, id, title) {
 /**
  * 
  */
-async function generateRecs() {
+async function generateRecs(event) {
+    event.preventDefault()
+    if (Object.keys(gameFields).length == 0) {
+        noPrefMsg.style.display = "block";
+        return;
+    } else {
+        noPrefMsg.style.display = "none";
+    }
     recList.innerHTML = "";
 
     // Extract pref data from html elements
@@ -71,7 +79,7 @@ async function generateRecs() {
 
         prefData[gameIndex] = pref;
     }
-    loadMsg.style.visibility = "visible";
+    loadMsg.style.display = "block";
     const response = await fetch("/recs", {
         method: "POST",
         headers: {
@@ -82,7 +90,7 @@ async function generateRecs() {
 
     const results = await response.json();
     console.log(results)
-    loadMsg.style.visibility = "hidden";
+    loadMsg.style.display = "none";
 
     for (const i in results) {
         const title = results[i][1];
@@ -98,7 +106,7 @@ async function generateRecs() {
 addNewPref.addEventListener("click", () => {
     const gameField = document.createElement("game-field");
     // Must append before using children, need connectedCallback to run
-    prefForm.appendChild(gameField); 
+    prefs.appendChild(gameField); 
     
     gameFields[gameField.id_] = gameField;
     const closeButton = gameField.getElementsByClassName("rem-pref").item(0);
@@ -123,4 +131,4 @@ addNewPref.addEventListener("click", () => {
     });
 });
 
-submitButton.addEventListener("click", generateRecs);
+prefForm.addEventListener("submit", generateRecs);
