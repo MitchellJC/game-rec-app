@@ -3,6 +3,8 @@ import json
 import pickle
 from SVD import SVDPredictor
 from RecData import RecData
+
+from bs4 import BeautifulSoup
 from flask import Flask, jsonify, render_template, request
 
 SUCCESS_CODE = 200
@@ -28,7 +30,8 @@ def empty_search():
 @app.route('/topn/<user_id>', methods=['GET'])
 def get_topn(user_id):
     top_n = svd.top_n(int(user_id))
-    return str([data.index_to_title(index) for _, index in top_n])
+    top_n = [data.index_to_title(index) for _, index in top_n]
+    return str(top_n)
 
 @app.route('/recs', methods=['POST'])
 def recs():

@@ -73,13 +73,13 @@ function selectOption(gameField, id, title) {
  */
 async function generateRecs(event) {
     event.preventDefault()
+
     if (Object.keys(gameFields).length == 0) {
         noPrefMsg.style.display = "block";
         return;
     } else {
         noPrefMsg.style.display = "none";
     }
-    recList.innerHTML = "";
 
     // Extract pref data from html elements
     const prefData = {};
@@ -93,10 +93,12 @@ async function generateRecs(event) {
             return;
         }
 
-        pref = gameField.pref;
-
+        let pref = gameField.pref;
         prefData[gameIndex] = pref;
     }
+
+    recList.innerHTML = "";
+
     loadMsg.style.display = "block";
     const response = await fetch("/recs", {
         method: "POST",

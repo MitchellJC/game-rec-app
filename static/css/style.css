@@ -20,8 +20,12 @@ a {
     color: black;
 }
 
+a:hover {
+    color: darkred;
+}
+
 a:active {
-    color: aqua;
+    color: white;
 }
 
 header {
