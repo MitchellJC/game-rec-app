@@ -30,6 +30,11 @@ class RecData:
         test = []
         for user in range(self._M.shape[0]):
             possible_indices = np.nonzero(self._M[[user], :])[1]
+
+            # User not review enough to leave out
+            if len(possible_indices) <= k:
+                continue
+            
             left_out = np.random.choice(possible_indices, k, replace=False)
             for item in left_out:
                 M_prime[user, item] = 0

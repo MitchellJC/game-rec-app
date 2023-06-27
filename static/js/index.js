@@ -18,6 +18,8 @@ const gameFields = {}
  * @returns null
  */
 async function refreshSearch(gameField) {
+    gameField.gameId = null;
+
     const gameTitle = gameField.getElementsByClassName("game-title").item(0);
     const searchResult = gameField.getElementsByClassName("search-result").item(0);
 

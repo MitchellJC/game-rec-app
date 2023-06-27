@@ -1,5 +1,6 @@
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-image: url("../images/webb-dark.png");
 }
 
 input {
@@ -22,6 +23,7 @@ button {
     padding: 1rem;
     width: 100ch;
     border-style: double;
+    background-color: gainsboro;
 }
 
 .pref-container {
@@ -43,10 +45,16 @@ input[type=text] {
     border:3px outset red;
 }
 
+.search-result {
+    display: flex;
+    flex-direction: column;
+}
+
 .actions-div {
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;
 }
+
 
