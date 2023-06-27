@@ -2,11 +2,13 @@ const SUCCESS_EMPTY = 204
 
 const prefForm = document.getElementById("pref-form");
 const gameTitle = document.getElementById("game-title");
-const addNewPref = document.getElementById("add-newpref");
 const loadMsg = document.getElementById("load-msg");
 const noPrefMsg = document.getElementById("nopref-msg");
 const recList = document.getElementById("rec-list");
 const prefs = document.getElementById("prefs");
+
+const addNewPref = document.getElementById("add-newpref");
+const clearAllButt = document.getElementById("clear-all-butt");
 
 const gameFields = {}
 
@@ -16,10 +18,12 @@ const gameFields = {}
  * @returns null
  */
 async function refreshSearch(gameField) {
-    const title = gameField.getElementsByClassName("game-title").item(0).value;
+    const gameTitle = gameField.getElementsByClassName("game-title").item(0);
     const searchResult = gameField.getElementsByClassName("search-result").item(0);
 
-    const response = await fetch(`/search.${title}`);
+    gameTitle.classList.remove("has-selected");
+
+    const response = await fetch(`/search.${gameTitle.value}`);
     const status = response.status;
 
     searchResult.innerHTML = ""
@@ -55,6 +59,8 @@ function selectOption(gameField, id, title) {
 
     searchResult.innerHTML = "";
     gameTitle.value = title;
+    gameTitle.classList.add("has-selected");
+    gameTitle.classList.remove("not-selected-warn");
 }
 
 /**
@@ -74,7 +80,14 @@ async function generateRecs(event) {
     const prefData = {};
     for (const i in gameFields) {
         const gameField = gameFields[i];
+
         gameIndex = gameField.gameId;
+        if (gameIndex == null) {
+            const gameTitle = gameField.getElementsByClassName("game-title").item(0);
+            gameTitle.classList.add("not-selected-warn");
+            return;
+        }
+
         pref = gameField.pref;
 
         prefData[gameIndex] = pref;
@@ -89,7 +102,6 @@ async function generateRecs(event) {
     });
 
     const results = await response.json();
-    console.log(results)
     loadMsg.style.display = "none";
 
     for (const i in results) {
@@ -132,3 +144,12 @@ addNewPref.addEventListener("click", () => {
 });
 
 prefForm.addEventListener("submit", generateRecs);
+clearAllButt.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear your preferences?") == true) {
+        for (const i in gameFields) {
+            let gameField = gameFields[i];
+            gameField.remove();
+            delete gameFields[i];
+        }
+    }
+});

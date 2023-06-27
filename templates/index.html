@@ -10,15 +10,21 @@
 
   <body>
     <div class="margin-container">
+      <h1>Game Recommender</h1>
       <div class="pref-container">
           <form class="pref-form" id="pref-form">
           <div id="prefs"></div>
-          <button id="add-newpref">+</button>
-          <input id="submit-button" type="submit" value="Submit">
+          <div class="actions-div">
+            <button id="add-newpref">+</button>
+            <input id="submit-button" type="submit" value="Submit">
+            <button type="button" id="clear-all-butt">Clear all</button>
+          </div>
           </form>
-          <p id="load-msg" style="display: none;">Loading...</p>
-          <p id="nopref-msg" style="display: none;">No preferences supplied! Please add a preference.</p>
-          <ol id="rec-list">
+          <p id="load-msg" class="simple-centred" style="display: none;">Loading...</p>
+          <p id="nopref-msg" class="simple-centred" style="display: none;">
+            No preferences supplied! Please add a preference.
+          </p>
+          <ol class="simple-centred" id="rec-list">
           </ol>
       </div>
     </div>

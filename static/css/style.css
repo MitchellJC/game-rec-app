@@ -1,3 +1,21 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    user-select: none;
+}
+
+.simple-centred {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
 .margin-container {
     margin-left: auto;
     margin-right: auto;
@@ -12,8 +30,23 @@
     margin-right: auto;
 }
 
-/* .game-field {
+input[type=text] {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+.has-selected {
+    background-color: buttonface;
+    border:3px outset grey;
+}
+
+.not-selected-warn {
+    border:3px outset red;
+}
+
+.actions-div {
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
-} */
+    margin-top: 1rem;
+}
+
