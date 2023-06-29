@@ -3,6 +3,7 @@ const SUCCESS_EMPTY = 204
 const prefForm = document.getElementById("pref-form");
 const gameTitle = document.getElementById("game-title");
 const loadMsg = document.getElementById("load-msg");
+const loader = document.getElementById("loader");
 const noPrefMsg = document.getElementById("nopref-msg");
 const recList = document.getElementById("rec-list");
 const prefs = document.getElementById("prefs");
@@ -99,6 +100,7 @@ async function generateRecs(event) {
 
     recList.innerHTML = "";
 
+    loader.style.display = "block";
     loadMsg.style.display = "block";
     const response = await fetch("/recs", {
         method: "POST",
@@ -109,6 +111,7 @@ async function generateRecs(event) {
     });
 
     const results = await response.json();
+    loader.style.display = "none";
     loadMsg.style.display = "none";
 
     for (const i in results) {

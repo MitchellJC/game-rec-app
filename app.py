@@ -11,7 +11,7 @@ SUCCESS_CODE = 200
 SUCCESS_EMPTY = 204
 
 with open('model.pkl', 'rb') as file:
-    svd, data, train, val, test = pickle.load(file)
+    data, svd = pickle.load(file)
 
 app = Flask(__name__, '/templates')
 
@@ -40,8 +40,8 @@ def recs():
     prefs = data.create_prefs(prefs)
 
     svd._partial_batch_size = int(0)
-    svd.partial_fit(prefs)
-    top = svd.top_n(svd._num_users - 1)
+    svd.partial_fit(prefs, epochs=20)
+    top = svd.top_n(svd._num_users - 1, n=20)
     recs = [(r, data.index_to_title(index)) for r, index in top]
     return (jsonify(recs), SUCCESS_CODE)
 
