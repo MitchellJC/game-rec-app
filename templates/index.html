@@ -32,8 +32,11 @@
             <div id="prefs"></div>
           </form>
 
+          <div class="load-div">
+          <p id="load-msg" style="display: none;">Loading...</p>
           <div id="loader" class="loader" style="display: none;"></div>
-          <p id="load-msg" class="simple-centred" style="display: none;">Loading...</p>
+          </div>
+          
           <p id="nopref-msg" class="simple-centred" style="display: none;">
             No preferences supplied! Please add a preference.
           </p>
@@ -43,7 +46,7 @@
     </div>
 
     <footer>
-      <p>Mitchell Clark</p>
+      <p>By Mitchell Clark</p>
     </footer>
 
     <script src="{{url_for('static', filename='components/gameField.js')}}"></script>

@@ -40,12 +40,14 @@ def recs():
     prefs = data.create_prefs(prefs)
 
     svd._partial_batch_size = int(0)
-    svd.partial_fit(prefs, epochs=20)
+    svd.partial_fit(prefs, epochs=1)
     top = svd.top_n(svd._num_users - 1, n=20)
     recs = [(r, data.index_to_title(index)) for r, index in top]
+    svd.pop_user()
     return (jsonify(recs), SUCCESS_CODE)
 
 # Testing routes
+################################################################################
 @app.route('/insert')
 def insert_test():
     mydb = mysql.connector.connect(

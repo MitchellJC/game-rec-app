@@ -7,6 +7,10 @@ body {
     margin: 0;
 }
 
+h1 {
+    color: midnightblue;
+}
+
 input {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -17,28 +21,31 @@ button {
 }
 
 a {
-    color: black;
+    color: white;
+    text-decoration: none;
 }
 
 a:hover {
-    color: darkred;
+    text-decoration: wavy;
 }
 
 a:active {
-    color: white;
+    text-decoration: underline;
 }
 
 header {
     display: flex;
-    background-color: gainsboro;
+    background-color: midnightblue;
     padding: 1rem;
     gap: 1rem;
+    
 }
 
 footer {
     margin-top: auto;
     padding: 1rem;
-    background-color: gainsboro;
+    background-color: midnightblue;
+    color: white;
 }
 
 .simple-centred {
@@ -92,16 +99,24 @@ input[type=text] {
 }
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 0.5rem solid gray; /* Light grey */
+    border-top: 0.5rem solid midnightblue; /* Blue */
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: .5rem;
+    height: .5rem;
     animation: spin 2s linear infinite;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
   }
+
+#load-msg {
+    margin: 0;
+}
+
+.load-div {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
   
   @keyframes spin {
     0% { transform: rotate(0deg); }
