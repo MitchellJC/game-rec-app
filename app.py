@@ -37,13 +37,14 @@ def get_topn(user_id):
 def recs():
     user_data = request.get_json()
     prefs = [(int(index), pref) for index, pref in user_data.items()]
-    prefs = data.create_prefs(prefs)
+    # prefs = data.create_prefs(prefs)
 
-    svd._partial_batch_size = int(0)
-    svd.partial_fit(prefs, epochs=1)
-    top = svd.top_n(svd._num_users - 1, n=20)
+    # svd._partial_batch_size = int(0)
+    # svd.partial_fit(prefs, epochs=1)
+    # top = svd.top_n(svd._num_users - 1, n=20)
+    top = svd.items_knn(prefs, n=20)
     recs = [(r, data.index_to_title(index)) for r, index in top]
-    svd.pop_user()
+    # svd.pop_user()
     return (jsonify(recs), SUCCESS_CODE)
 
 # Testing routes

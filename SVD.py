@@ -5,6 +5,7 @@ import time
 import random
 import math
 import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 
 import numba as nb
 from numba import jit, njit, float64, uint32
@@ -108,10 +109,10 @@ class SVDBase():
         for epoch in range(epochs):
             start_time = time.time()
             # Choose a smaller subset of total samples already fitted
-            fitted_subset = random.sample(range(self._num_samples), k=batch_size)    
+            # fitted_subset = random.sample(range(self._num_samples), k=batch_size)    
             
             # Ensure that new indices are always used
-            possible_indices = fitted_subset + indices_of_new
+            possible_indices =  indices_of_new # + fitted_subset
             
             # Perform update for each sample
             for i in random.sample(possible_indices , k=len(possible_indices)):
@@ -435,6 +436,43 @@ class FastLogisticSVD(LogisticSVD):
         return predict_fast(user, item, self._user_features, 
                                   self._item_features)
     
+    def compute_sims(self):
+        start_t = time.time()
+        q = self._item_features
+        self._sims = lil_array((q.shape[0], q.shape[0]))
+        print("Computing similarities...")
+        for i in range(q.shape[0]):
+            if i % 200 == 0:
+                print("Upto row", i)
+            for j in range(i, q.shape[0]):
+                self._sims[i, j] = cosine_similarity(q[[i], :], q[[j], :])
+        print("Done computing similarities in", time.time() - start_t, "seconds")
+    
+    def items_knn(self, subjects, n=10):
+        top = []
+        for j in range(self._sims.shape[0]):
+            if j in [i for i, _ in subjects]:
+                continue  
+                
+            total = 0
+            for i, pref in subjects:
+                
+                if j < i:
+                    sim = self._sims[j, i]
+                elif j > i:
+                    sim = self._sims[i, j]
+                    
+                if pref == 0:
+                    sim = 1 - sim
+                
+                total += sim
+            
+            avg = total/len(subjects)
+            top.append((avg, j))
+            top.sort(reverse=True)
+            top = top[:n]
+        return top
+    
     def _cache_users_rated(self):
         self._users_rated = {}
         for sample_num in range(self._num_samples):
@@ -570,6 +608,7 @@ def compute_val_error_fast(val_errors, validation_set,
 def sigmoid_fast(x):
     if np.isnan(x):
         print("x is nan!!!!!!!!")
+        raise ValueError()
     return 1/(1 + np.exp(-x))
 
 @jit(nopython=True)
