@@ -483,13 +483,14 @@ class FastLogisticSVD(LogisticSVD):
             [knn.put(item) for item in self.items_knn([subject], n=n)]
             knns.append(knn)
 
+        print(len(knns))
         # Build top-n
         i = 0
         while len(top) != n:
-            print("Hail")
+            print("Hail", i)
             top.append(knns[i].get())
 
-            i = (i + 1 % len(knns))
+            i = (i + 1) % len(knns)
             print(len(top))
             
 
