@@ -450,29 +450,58 @@ class FastLogisticSVD(LogisticSVD):
         print("Done computing similarities in", time.time() - start_t, "seconds")
     
     def items_knn(self, subjects, n=10):
+        alpha = 0.1
         top = []
-        for j in range(self._sims.shape[0]):
-            if j in [i for i, _ in subjects]:
-                continue  
+        disliked = [(i, pref) for i, pref in subjects if pref == 0]
+        # Get candidates
+        for i, pref in subjects:
+            if pref == 0:
+                continue
             
-            total = 0
-            for i, pref in subjects:
-                if j < i:
+            for j in range(self._sims.shape[0]):
+                if i == j:
+                    continue
+                elif j < i:
                     sim = self._sims[j, i]
                 elif j > i:
                     sim = self._sims[i, j]
-                        
-                if pref == 0: # Convert to dissimilarity
-                    sim = 1 - sim 
-                
-                total += sim
-            
-            avg = total/len(subjects)
-            top.append((avg, j))
-            top.sort(reverse=True)
-            top = top[:n]
-        return top
 
+                # Get min dissimilarity
+                dissims = [1]
+                for k, pref in disliked:
+                    if j == k:
+                        continue
+                    elif j < k:
+                        dissim = 1 - self._sims[j, k]*alpha
+                    elif j > k:
+                        dissim = 1 - self._sims[k, j]*alpha
+
+                    dissims.append(dissim)
+
+                sim *= min(dissims)
+
+                top.append((sim, j))
+                top.sort(reverse=True)
+                top = top[:10*n]
+
+        # Filter already seen
+        seen = [id for id, pref, in subjects]
+        top = [cand for cand in top if cand[1] not in seen]
+
+        # Filter duplicates
+        new_top = []
+        seen = []
+        for score, id in top:
+            if id in seen:
+                continue
+
+            seen.append(id)
+            new_top.append((score, id))
+        top = new_top
+
+        top = top[:n]
+        return top
+    
     def items_top_n(self, subjects, n=10):
         top = []
         knns = []
@@ -483,16 +512,12 @@ class FastLogisticSVD(LogisticSVD):
             [knn.put(item) for item in self.items_knn([subject], n=n)]
             knns.append(knn)
 
-        print(len(knns))
         # Build top-n
         i = 0
         while len(top) != n:
-            print("Hail", i)
             top.append(knns[i].get())
 
-            i = (i + 1) % len(knns)
-            print(len(top))
-            
+            i = (i + 1) % len(knns)            
 
         return top
 
