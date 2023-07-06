@@ -12,6 +12,10 @@ h1 {
     color: white;
 }
 
+h2 {
+    color: aquamarine;
+}
+
 input {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }

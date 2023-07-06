@@ -71,6 +71,8 @@ function selectOption(gameField, id, title) {
 
 /**
  * 
+ * @param {*} event 
+ * @returns 
  */
 async function generateRecs(event) {
     event.preventDefault()
@@ -113,7 +115,10 @@ async function generateRecs(event) {
     const results = await response.json();
     loader.style.display = "none";
     loadMsg.style.display = "none";
-
+    
+    const header = document.createElement("h2");
+    header.innerHTML = "Your Recommendations";
+    recList.append(header);
     for (const i in results) {
         const title = results[i][1];
         const rec = document.createElement("li");
