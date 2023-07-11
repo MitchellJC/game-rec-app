@@ -121,8 +121,12 @@ async function generateRecs(event) {
     recList.append(header);
     for (const i in results) {
         const title = results[i][1];
+        const id = String(results[i][0]);
         const rec = document.createElement("li");
+        const image = document.createElement("img");
+        image.src = "{{url_for('static', filename='covers/'" + id + "'.jpg')}}";
         rec.innerHTML = title;
+        rec.appendChild(image);
         recList.appendChild(rec);
     }
 }

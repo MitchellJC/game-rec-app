@@ -72,7 +72,10 @@ class RecData:
     def set_titles(self, titles):
         """Maps titles to item ids using given DataFrame. Columns must be of the form [item_id, title]"""
         self._index_to_title = {self._itemid_to_index[item_id]: title for _, item_id, title in titles.itertuples() if item_id in self._itemid_to_index}
-        
+
+    def index_to_id(self, index):
+        return self._index_to_itemid[index]
+
     def index_to_title(self, index):
         return self._index_to_title[index]
     

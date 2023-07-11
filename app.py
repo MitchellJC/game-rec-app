@@ -13,7 +13,7 @@ SUCCESS_EMPTY = 204
 with open('model.pkl', 'rb') as file:
     data, svd = pickle.load(file)
 
-app = Flask(__name__, '/templates')
+app = Flask(__name__, '/templates', static_folder="static")
 
 @app.route('/')
 def home():
@@ -43,9 +43,13 @@ def recs():
     # svd.partial_fit(prefs, epochs=1)
     # top = svd.top_n(svd._num_users - 1, n=20)
     top = svd.items_knn(prefs, n=10)
-    recs = [(r, data.index_to_title(index)) for r, index in top]
+    recs = [(data.index_to_id(index), data.index_to_title(index)) for _, index in top]
     # svd.pop_user()
     return (jsonify(recs), SUCCESS_CODE)
+
+@app.route()
+def get_cover(item_id):
+    return 
 
 # Testing routes
 ################################################################################
