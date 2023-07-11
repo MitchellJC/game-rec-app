@@ -5,7 +5,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
-    color: floralwhite;
+    color: lightblue;
 }
 
 h1 {
@@ -13,7 +13,7 @@ h1 {
 }
 
 h2 {
-    color: aquamarine;
+    color: white;
 }
 
 input {
@@ -26,16 +26,21 @@ button {
 }
 
 a {
-    color: white;
+    color: rgb(140, 139, 139);
     text-decoration: none;
 }
 
 a:hover {
-    text-decoration: wavy;
+    color: white;
 }
 
 a:active {
     text-decoration: underline;
+}
+
+ol {
+    padding: 0;
+    list-style-position: inside;
 }
 
 header {
@@ -50,7 +55,12 @@ footer {
     margin-top: auto;
     padding: 1rem;
     background-color: midnightblue;
-    color: white;
+    color: rgb(140, 139, 139);
+}
+
+.game-field {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .simple-centred {
