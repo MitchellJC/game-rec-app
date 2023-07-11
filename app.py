@@ -1,6 +1,7 @@
 import mysql.connector
 import json
 import pickle
+import base64
 from SVD import SVDPredictor
 from RecData import RecData
 
@@ -13,7 +14,7 @@ SUCCESS_EMPTY = 204
 with open('model.pkl', 'rb') as file:
     data, svd = pickle.load(file)
 
-app = Flask(__name__, '/templates', static_folder="static")
+app = Flask(__name__, '/templates')
 
 @app.route('/')
 def home():
@@ -47,9 +48,11 @@ def recs():
     # svd.pop_user()
     return (jsonify(recs), SUCCESS_CODE)
 
-@app.route()
+@app.route('/get_cover/<item_id>', methods=['GET'])
 def get_cover(item_id):
-    return 
+    with open("static/covers/" + str(item_id) + ".jpg", 'rb') as f:
+        img_data = str(base64.b64encode(f.read()).decode('utf-8'))
+    return (jsonify(img_data, SUCCESS_CODE))
 
 # Testing routes
 ################################################################################

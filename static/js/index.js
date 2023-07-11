@@ -123,10 +123,15 @@ async function generateRecs(event) {
         const title = results[i][1];
         const id = String(results[i][0]);
         const rec = document.createElement("li");
-        const image = document.createElement("img");
-        image.src = "{{url_for('static', filename='covers/'" + id + "'.jpg')}}";
         rec.innerHTML = title;
-        rec.appendChild(image);
+
+        const response = await fetch("/get_cover/" + id);
+        const data = await response.json();
+        const img = new Image();
+        img.src = "data:image/jpg;base64," + data[0];
+        img.classList.add("rec-image")
+        
+        rec.appendChild(img);
         recList.appendChild(rec);
     }
 }
