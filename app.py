@@ -2,7 +2,7 @@ import mysql.connector
 import json
 import pickle
 import base64
-from SVD import SVDPredictor
+from SVD import RatingSVD, LogisticSVD
 from RecData import RecData
 
 from bs4 import BeautifulSoup
@@ -43,7 +43,7 @@ def recs():
     # svd._partial_batch_size = int(0)
     # svd.partial_fit(prefs, epochs=1)
     # top = svd.top_n(svd._num_users - 1, n=20)
-    top = svd.items_knn(prefs, n=10)
+    top = svd.items_knn(prefs, n=1)
     recs = [(data.index_to_id(index), data.index_to_title(index)) for _, index in top]
     # svd.pop_user()
     return (jsonify(recs), SUCCESS_CODE)
