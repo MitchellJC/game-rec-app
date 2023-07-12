@@ -114,7 +114,7 @@ async function generateRecs(event) {
 
     const results = await response.json();
     loader.style.display = "none";
-    loadMsg.style.display = "none";
+    loadMsg.style.display = "none"; // TODO maybe add load until images fully done
     
     const header = document.createElement("h2");
     header.innerHTML = "Your Recommendations";
