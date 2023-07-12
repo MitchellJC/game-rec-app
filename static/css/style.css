@@ -26,7 +26,7 @@ button {
 }
 
 a {
-    color: rgb(140, 139, 139);
+    color: wheat;
     text-decoration: none;
 }
 
@@ -77,7 +77,7 @@ footer {
     width: 80%;
     max-width: 100ch;
     border-style: double;
-    background-color: rgb(62, 62, 62);
+    background-color: rgb(28, 28, 28);
 }
 
 .pref-container {
@@ -132,6 +132,19 @@ input[type=text] {
     display: flex;
     justify-content: center;
     gap: 1rem;
+}
+
+.rec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-image: linear-gradient(to bottom right, black, midnightblue);
+    padding: 0.5rem;
+
+
+    box-shadow: 0.2rem 0.2rem black;
 }
 
 .rec-image {
