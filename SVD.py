@@ -206,8 +206,9 @@ class SVDBase():
         print("Done computing similarities in", time.time() - start_t, "seconds")
 
     def items_knn(self, subjects, n=10):
-        alpha = 0.1
+        alpha = 1
         top = []
+        seen = [i for i, _ in subjects]
         disliked = [(i, pref) for i, pref in subjects if pref == 0]
         # Get candidates
         for i, pref in subjects:
@@ -234,12 +235,15 @@ class SVDBase():
 
                     dissims.append(dissim)
 
-                sim *= min(dissims)
+                sim -= min(dissims)
 
                 top.append((sim, j))
                 top.sort(reverse=True)
                 top = top[:10*n]
-            return top
+        
+        top = [(sim, j) for sim, j in top if j not in seen]
+        top = top[:n]
+        return top
 
     def _cache_users_rated(self):
         self._users_rated = {}
@@ -457,8 +461,6 @@ class LogisticSVD(SVDBase):
         return predict_fast(user, item, self._user_features, 
                                   self._item_features, self._user_biases, self._item_biases)
     
-    
-
         # Filter already seen
         seen = [id for id, pref, in subjects]
         top = [cand for cand in top if cand[1] not in seen]
