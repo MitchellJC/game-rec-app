@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='images/logo-32.png')}}" />
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
   </head>
 
@@ -17,7 +18,8 @@
     </header>
 
     <div class="margin-container">
-      <h1>Game Gabbler</h1>
+      <div class="flex"><img width="50" height="50" src="{{url_for('static', filename='images/logo.png')}}"><h1>Game Gabbler</h1></div>
+      
       <p>
         Add some games below, indicate your preference then hit submit to generate
         recommendations! Please add at least one game that you like.

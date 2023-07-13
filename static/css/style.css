@@ -10,6 +10,13 @@ body {
 
 h1 {
     color: white;
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 h2 {
