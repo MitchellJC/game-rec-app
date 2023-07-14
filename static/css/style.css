@@ -96,11 +96,6 @@ footer {
     margin-right: auto;
 }
 
-#prefs {
-    max-height: 50vh;
-    overflow-y: auto;
-}
-
 input[type=text] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
@@ -119,6 +114,7 @@ input[type=text] {
     flex-direction: column;
     position: absolute;
     width: 100%;
+    margin-top: 1.5rem;
 }
 
 .actions-div {
