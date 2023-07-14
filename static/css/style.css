@@ -96,6 +96,11 @@ footer {
     margin-right: auto;
 }
 
+#prefs {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
 input[type=text] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
