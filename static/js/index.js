@@ -124,7 +124,12 @@ async function generateRecs(event) {
         gameIndex = gameField.gameId;
         if (gameIndex == null) {
             const gameTitle = gameField.getElementsByClassName("game-title").item(0);
+            const top = gameField.offsetTop;
+
             gameTitle.classList.add("not-selected-warn");
+            alert("Preference not selected.");
+            prefs.scroll({'top': top});
+
             return;
         }
 
