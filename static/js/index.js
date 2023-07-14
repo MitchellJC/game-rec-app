@@ -125,14 +125,23 @@ async function generateRecs(event) {
         console.log(title + " " + id);
         const rec = document.createElement("li");
         rec.classList.add("rec");
-        rec.innerHTML = title;
+        
+        // Create title
+        const titleSpan = document.createElement("span");
+        titleSpan.innerHTML = title;
 
+        // Create like/dislike
+        const prefButtons = document.createElement("pref-buttons");
+
+        // Create image
         const response = await fetch("/get_cover/" + id);
         const data = await response.json();
         const img = new Image(width="100px");
         img.src = "data:image/jpg;base64," + data[0];
         img.classList.add("rec-image");
         
+        rec.appendChild(titleSpan);
+        rec.appendChild(prefButtons);
         rec.appendChild(img);
         recList.appendChild(rec);
     }
