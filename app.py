@@ -39,7 +39,7 @@ def recs():
     user_data = request.get_json()
     prefs = [(int(index), pref) for index, pref in user_data.items()]
     top = svd.items_knn(prefs, n=10)
-    recs = [(data.index_to_id(index), data.index_to_title(index)) for _, index in top]
+    recs = [(index, data.index_to_id(index), data.index_to_title(index)) for _, index in top]
 
     return (jsonify(recs), SUCCESS_CODE)
 

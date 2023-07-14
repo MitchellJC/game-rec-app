@@ -66,6 +66,9 @@ footer {
 }
 
 .game-field {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
@@ -141,6 +144,7 @@ input[type=text] {
     gap: 1rem;
 }
 
+/* Recs */
 .rec {
     display: flex;
     justify-content: space-between;
@@ -150,8 +154,11 @@ input[type=text] {
     background-image: linear-gradient(to bottom right, black, midnightblue);
     padding: 0.5rem;
     gap: .5rem;
-
     box-shadow: 0.2rem 0.2rem black;
+}
+
+.pref-buttons {
+    margin-top: 0.5rem;
 }
 
 .rec-image {

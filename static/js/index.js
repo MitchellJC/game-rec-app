@@ -69,13 +69,45 @@ function selectOption(gameField, id, title) {
     gameTitle.classList.remove("not-selected-warn");
 }
 
+function addNewPrefField() {
+    const gameField = document.createElement("game-field");
+    // Must append before using children, need connectedCallback to run
+    prefs.appendChild(gameField); 
+    
+    gameFields[gameField.id_] = gameField;
+    const closeButton = gameField.getElementsByClassName("rem-pref").item(0);
+    const dislike = gameField.getElementsByClassName("dislike-radio").item(0);
+    const like = gameField.getElementsByClassName("like-radio").item(0);
+    
+    closeButton.addEventListener("click", () => {
+        gameField.remove();
+        delete gameFields[gameField.id_]; 
+    });
+    
+    gameField.addEventListener("keyup", () => {
+        refreshSearch(gameField);
+    });
+
+    gameField.addEventListener("click", () => {
+        if (dislike.checked) {
+            gameField.pref = 0;
+        } else if (like.checked) {
+            gameField.pref = 1;
+        }
+    });
+
+    return gameField
+}
+
 /**
  * 
  * @param {*} event 
  * @returns 
  */
 async function generateRecs(event) {
-    event.preventDefault()
+    if (event != null) {
+        event.preventDefault();
+    }
 
     if (Object.keys(gameFields).length == 0) {
         noPrefMsg.style.display = "block";
@@ -120,11 +152,15 @@ async function generateRecs(event) {
     header.innerHTML = "Your Recommendations";
     recList.append(header);
     for (const i in results) {
-        const title = results[i][1];
-        const id = String(results[i][0]);
+        const index = results[i][0];
+        const id = String(results[i][1]);
+        const title = results[i][2];
+        
         console.log(title + " " + id);
         const rec = document.createElement("li");
         rec.classList.add("rec");
+
+        titleContainer = document.createElement("div");
         
         // Create title
         const titleSpan = document.createElement("span");
@@ -140,45 +176,35 @@ async function generateRecs(event) {
         img.src = "data:image/jpg;base64," + data[0];
         img.classList.add("rec-image");
         
-        rec.appendChild(titleSpan);
-        rec.appendChild(prefButtons);
+        titleContainer.appendChild(titleSpan);
+        titleContainer.appendChild(prefButtons);
+        rec.appendChild(titleContainer);
         rec.appendChild(img);
         recList.appendChild(rec);
+        
+        // Must access buttons after inserted into the DOM.
+        const dislikeButt = prefButtons.getElementsByClassName("dislike-butt")[0];
+        const likeButt = prefButtons.getElementsByClassName("like-butt")[0];
+
+        dislikeButt.addEventListener("click", () => {
+            gameField = addNewPrefField();
+            dislikeRadio = gameField.getElementsByClassName("dislike-radio")[0];
+
+            selectOption(gameField, index, title);
+            dislikeRadio.checked = true;
+            generateRecs(null);
+        });
+        likeButt.addEventListener("click", () => {
+            gameField = addNewPrefField();
+            selectOption(gameField, index, title);
+            generateRecs(null);
+        });
     }
 }
 
-/**
- * Create new game entry field.
- */
-addNewPref.addEventListener("click", () => {
-    const gameField = document.createElement("game-field");
-    // Must append before using children, need connectedCallback to run
-    prefs.appendChild(gameField); 
-    
-    gameFields[gameField.id_] = gameField;
-    const closeButton = gameField.getElementsByClassName("rem-pref").item(0);
-    const dislike = gameField.getElementsByClassName("dislike-button").item(0);
-    const like = gameField.getElementsByClassName("like-button").item(0);
-    
-    closeButton.addEventListener("click", () => {
-        gameField.remove();
-        delete gameFields[gameField.id_]; 
-    });
-    
-    gameField.addEventListener("keyup", () => {
-        refreshSearch(gameField);
-    });
-
-    gameField.addEventListener("click", () => {
-        if (dislike.checked) {
-            gameField.pref = 0;
-        } else if (like.checked) {
-            gameField.pref = 1;
-        }
-    });
-});
-
+addNewPref.addEventListener("click", addNewPrefField);
 prefForm.addEventListener("submit", generateRecs);
+
 clearAllButt.addEventListener("click", () => {
     if (confirm("Are you sure you want to clear your preferences?") == true) {
         for (const i in gameFields) {

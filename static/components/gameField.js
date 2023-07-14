@@ -16,9 +16,9 @@ class GameField extends HTMLElement {
             <label for="game-title${this.id_}">Game title:</label>
             <input type="text" name="game-title" id="game-title${this.id_}" class="game-title" required>
             <label for="dislike-option${this.id_}">Dislike</label>
-            <input class="dislike-button" type="radio" name="like-box${this.id_}" id="dislike-option${this.id_}" value="dislike">
+            <input class="dislike-radio" type="radio" name="like-box${this.id_}" id="dislike-option${this.id_}" value="dislike">
             <label for="like-option${this.id_}">Like</label>
-            <input class="like-button" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like" checked>
+            <input class="like-radio" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like" checked>
             <div class="search-result"></div>
         </div>`;
     }

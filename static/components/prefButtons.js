@@ -6,8 +6,8 @@ class PrefButtons extends HTMLElement {
     connectedCallback() {
         this.innerHTML = 
         `<div class="pref-buttons">
-            <button type="button">Dislike</button>
-            <button type="button">Like</button>
+            <button class="dislike-butt" type="button">Dislike</button>
+            <button class="like-butt" type="button">Like</button>
         </div>`;
     }
 
