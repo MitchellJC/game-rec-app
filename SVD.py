@@ -224,7 +224,7 @@ class SVDBase():
                     sim = self._sims[i, j]
 
                 # Get min dissimilarity
-                dissims = [1]
+                dissims = [0]
                 for k, pref in disliked:
                     if j == k:
                         continue
