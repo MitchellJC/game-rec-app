@@ -42,6 +42,7 @@ class SVDBase():
         self._C = C
         self._lrate_C = self._learning_rate*self._C
         
+        self._mu = 0
         self._user_features = np.array(np.random.normal(size=(self._num_users, self._k), 
                                                scale=0.01), dtype=np.float64)
         self._item_features = np.array(np.random.normal(size=(self._num_items, self._k), 
@@ -60,6 +61,7 @@ class SVDBase():
     def fit(self, M, epochs, validation_set=None, tol=1e-15, early_stop=True):
         self._M = M 
         self._M = self._M.tocsr()
+        self._mu = self._M.sum() / len(self._M.nonzero()[0]) - 1
         
         self._validation_set = validation_set
         self._tol = tol
@@ -98,6 +100,7 @@ class SVDBase():
             epochs (int) - The number of epochs
             batch_size (int) - The number of users to mix-in for training
             compute_err (bool) - True to enable training error computation"""
+        print("Warning in development.")
         self._num_users += 1
         self._M = csr_array(vstack([lil_array(self._M), new_sample]))
         total_users, total_items = self._M.nonzero()
@@ -125,13 +128,7 @@ class SVDBase():
             for i in random.sample(possible_indices , k=len(possible_indices)):
                 (self._user_features, self._item_features,
                  self._user_biases, self._item_biases) = (
-                    update_fast(i, total_users[i], total_items[i], self._M.data, 
-                                self._user_features,
-                                self._item_features,
-                                self._user_biases,
-                                self._item_biases,
-                                self._learning_rate,
-                                self._lrate_C)
+                    self._update(i, total_users[i], total_items[i])
                 ) 
             
             print("Epoch", epoch, end="/")
@@ -145,7 +142,7 @@ class SVDBase():
         self._M = self._M[:-1, :]        
         self._user_features = self._user_features[:-1, :]
 
-    def top_n(self, user, n=10):
+    def top_n(self, user, n=10, remove_bias=False):
         """Return the top n recommendations for given user.
         
         Parameters:
@@ -161,6 +158,8 @@ class SVDBase():
                 continue
                 
             predicted_rating = self.predict(user, item)
+            if remove_bias:
+                predicted_rating -= self._item_biases[item, 0]
             
             top.append((predicted_rating, item))
             top.sort(key=lambda x: x[0], reverse=True)
@@ -213,43 +212,77 @@ class SVDBase():
                 self._sims[i, j] = cosine_similarity(q[[i], :], q[[j], :])
         print("Done computing similarities in", time.time() - start_t, "seconds")
 
+    # def items_knn(self, subjects, n=10):
+    #     alpha = 1
+    #     top = []
+    #     seen = [i for i, _ in subjects]
+    #     disliked = [(i, pref) for i, pref in subjects if pref == 0]
+    #     # Get candidates
+    #     for i, pref in subjects:
+    #         if pref == 0:
+    #             continue
+            
+    #         for j in range(self._sims.shape[0]):
+    #             if i == j or j in seen:
+    #                 continue
+    #             elif j < i:
+    #                 sim = self._sims[j, i]
+    #             elif j > i:
+    #                 sim = self._sims[i, j]
+
+    #             # Get min dissimilarity
+    #             dissims = [0]
+    #             for k, pref in disliked:
+    #                 if j == k:
+    #                     continue
+    #                 elif j < k:
+    #                     dissim = 1 - self._sims[j, k]*alpha
+    #                 elif j > k:
+    #                     dissim = 1 - self._sims[k, j]*alpha
+
+    #                 dissims.append(dissim)
+
+    #             sim -= min(dissims)
+
+    #             seen.append(j)
+    #             top.append((sim, j))
+    #             top.sort(reverse=True)
+    #             top = top[:10*n]
+            
+    #     top = top[:n]
+
+    #     return top
     def items_knn(self, subjects, n=10):
-        alpha = 1
+        k = 10
         top = []
-        seen = [i for i, _ in subjects]
-        disliked = [(i, pref) for i, pref in subjects if pref == 0]
-        # Get candidates
-        for i, pref in subjects:
-            if pref == 0:
-                continue
-            
-            for j in range(self._sims.shape[0]):
-                if i == j or j in seen:
-                    continue
-                elif j < i:
+        for i in range(self._num_items):
+            # Get neighbours
+            neighbs = []
+            for j, pref in subjects:
+                if j < i:
                     sim = self._sims[j, i]
-                elif j > i:
+                elif j >= i:
                     sim = self._sims[i, j]
+                neighbs.append((sim, pref, j))
 
-                # Get min dissimilarity
-                dissims = [0]
-                for k, pref in disliked:
-                    if j == k:
-                        continue
-                    elif j < k:
-                        dissim = 1 - self._sims[j, k]*alpha
-                    elif j > k:
-                        dissim = 1 - self._sims[k, j]*alpha
+            neighbs.sort(key=lambda x: x[0], reverse=True)
+            neighbs = neighbs[:k]
 
-                    dissims.append(dissim)
-
-                sim -= min(dissims)
-
-                seen.append(j)
-                top.append((sim, j))
-                top.sort(reverse=True)
-                top = top[:10*n]
             
+            # Compute rating
+            a = 0
+            b = 0
+            for sim, pref, j in neighbs:
+                r = pref
+                a += sim*r
+                b += np.abs(sim)
+
+            pred = a/b if b != 0 else -2
+            top.append((pred, i))
+
+        top = [(pred, i) for pred, i in top if i not in [j for j, pref in subjects]]
+        random.shuffle(top)
+        top.sort(key=lambda x: x[0], reverse=True)
         top = top[:n]
 
         return top
@@ -272,6 +305,7 @@ class SVDBase():
             # For all samples in random order update each parameter
             for i in random.sample(range(self._num_samples), k=self._num_samples):
                 updates = self._update(i, users[i], items[i])
+
                 (self._user_features, self._item_features, 
                 self._user_biases, self._item_biases) = updates
                 
@@ -307,25 +341,27 @@ class SVDBase():
             user_freqs[user, 0] += 1
             item_freqs[item, 0] += 1
 
-        self._item_penalty = 1 - ( user_freqs - np.min(user_freqs) )/ (
-            np.max(user_freqs) - np.min(user_freqs))
-        self._user_penalty = 1 - ( item_freqs - np.min(item_freqs) )/ (
+        self._item_penalty = 1 - ( item_freqs - np.min(item_freqs) )/ (
             np.max(item_freqs) - np.min(item_freqs))
+        self._user_penalty = 1 - ( user_freqs - np.min(user_freqs) )/ (
+            np.max(user_freqs) - np.min(user_freqs))
             
             
 class RatingSVD(SVDBase):
     """SVD for collaborative filtering, uses explicit ratings."""
     def predict(self, user, item):
-        return predict_fast_rating(user, item, self._user_features, 
+        return predict_fast_rating(user, item, self._mu, self._user_features, 
                                   self._item_features, self._user_biases, 
                                   self._item_biases)
     
     def _update(self, i, user, item):
         return update_fast_rating(i, user, item, self._M.data, 
+                                self._mu,
                                 self._user_features,
                                 self._item_features,
                                 self._user_biases,
                                 self._item_biases,
+                                self._user_penalty,
                                 self._item_penalty,
                                 self._learning_rate,
                                 self._lrate_C)
@@ -333,23 +369,23 @@ class RatingSVD(SVDBase):
     def _compute_error(self):
         self._M = self._M.tocsr()
         return compute_rmse_fast(self._M.data, self._M.indices, self._M.indptr, 
-                           self._num_samples, self._train_errors, self._epoch,
+                           self._num_samples, self._train_errors, self._epoch, self._mu,
                            self._user_features, self._item_features, self._user_biases, self._item_biases)
         
     def _compute_val_error(self):
         return compute_val_rmse_fast(self._val_errors, List(self._validation_set), 
-                                      self._epoch, self._user_features, 
+                                      self._epoch, self._mu, self._user_features, 
                                       self._item_features, self._user_biases, self._item_biases)
     
 # Fast Numba Methods
 ################################################################################
 @jit(nopython=True)
-def predict_fast_rating(user, item, user_features, item_features, user_biases, item_biases):
+def predict_fast_rating(user, item, mu, user_features, item_features, user_biases, item_biases):
     return (np.dot(user_features[user, :], item_features[item, :]) 
-            + user_biases[user, 0] + item_biases[item, 0])
+            + user_biases[user, 0] + item_biases[item, 0] + mu)
 
 @jit(nopython=True)
-def predict_pairs_fast_rating(pairs, user_features, item_features, user_biases, item_biases):
+def predict_pairs_fast_rating(pairs, mu, user_features, item_features, user_biases, item_biases):
         """Returns a list of predictions of the form (user, item, prediction) 
         for each (user, item) pair in pairs.
         
@@ -360,19 +396,22 @@ def predict_pairs_fast_rating(pairs, user_features, item_features, user_biases, 
             List of (user, item, prediction) tuples."""
         predictions = []
         for user, item in pairs:
-            prediction = predict_fast_rating(user, item, user_features, item_features, user_biases, item_biases)
+            prediction = predict_fast_rating(user, item, mu, user_features, 
+                                            item_features, user_biases, item_biases)
             predictions.append((user, item, prediction))
         
         return predictions
 
 @jit(nopython=True)
-def update_fast_rating(i, user, item, values, user_features, item_features, user_biases, 
-                item_biases, item_penalty, learning_rate, lrate_C, do_items=True):
+def update_fast_rating(i, user, item, values, mu, user_features, item_features, user_biases, 
+                item_biases, user_penalty, item_penalty, learning_rate, lrate_C, do_items=True):
     # Pre-cache computations
     true = values[i] - 1
-    pred = predict_fast_rating(user, item, user_features, 
+    pred = predict_fast_rating(user, item, mu, user_features, 
                         item_features, user_biases, item_biases)
-    err = item_penalty[item, 0]*learning_rate*(true - pred)
+    if np.isnan(user_penalty[user, 0]):
+        raise ValueError(f"Nan for user {user}")
+    err = user_penalty[user, 0]*item_penalty[item, 0]*learning_rate*(true - pred) # TODO Figure out what to do with item penalty.
     
     # Compute user features update
     new_user_features = (
@@ -391,7 +430,7 @@ def update_fast_rating(i, user, item, values, user_features, item_features, user
             -lrate_C*item_features[item, :]
         )
         new_item_biases = (
-            item_biases[item, 0] + err  - lrate_C*item_biases[item, 0]
+            item_biases[item, 0] + err  - 30*lrate_C*item_biases[item, 0]
         )
 
         item_features[item, :] = new_item_features
@@ -404,7 +443,7 @@ def update_fast_rating(i, user, item, values, user_features, item_features, user
 
 @jit(nopython=True)
 def compute_rmse_fast(values, indices, indptr, num_samples, train_errors, 
-                       epoch, user_features, item_features, user_biases, item_biases):
+                       epoch, mu, user_features, item_features, user_biases, item_biases):
     error = 0
 
     num_vals = 0
@@ -418,7 +457,8 @@ def compute_rmse_fast(values, indices, indptr, num_samples, train_errors,
             next_row_index += 1
 
         true = value - 1
-        pred = predict_fast_rating(next_row_index - 1, column, user_features, item_features, user_biases, item_biases)
+        pred = predict_fast_rating(next_row_index - 1, column, mu, user_features, 
+                                   item_features, user_biases, item_biases)
 
         error += (true - pred)**2
 
@@ -430,11 +470,11 @@ def compute_rmse_fast(values, indices, indptr, num_samples, train_errors,
 
 @jit(nopython=True)
 def compute_val_rmse_fast(val_errors, validation_set,
-                       epoch, user_features, item_features, user_biases, item_biases):
+                       epoch, mu, user_features, item_features, user_biases, item_biases):
    # Predict rating for all pairs in validation
     predictions = predict_pairs_fast_rating([(user, item) 
                                 for user, item, _ in validation_set], 
-                                user_features, item_features, user_biases, item_biases)
+                                mu, user_features, item_features, user_biases, item_biases)
     
     # Add true ratings into tuples
     predictions = [prediction + (validation_set[i][2],) 
@@ -450,7 +490,6 @@ def compute_val_rmse_fast(val_errors, validation_set,
     val_errors[epoch] = val_error
 
     return val_error
-
 ################################################################################
 
 class LogisticSVD(SVDBase):

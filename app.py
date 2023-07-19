@@ -3,6 +3,7 @@ import json
 import pickle
 import base64
 from SVD import RatingSVD, LogisticSVD
+from KNN import ItemKNN
 from RecData import RecData
 
 from bs4 import BeautifulSoup
@@ -13,6 +14,27 @@ SUCCESS_EMPTY = 204
 
 with open('model.pkl', 'rb') as file:
     data, svd = pickle.load(file)
+
+# # KNN
+# import numba as nb
+# from numba import jit
+
+# with open('knn.pkl', 'rb') as file:
+#     data, sims, means = pickle.load(file)
+
+# @jit
+# def make_dict(items):
+#     return {k: v for k,v in items}
+
+# means_prime = make_dict(tuple(means.items()))
+# knn = ItemKNN(k=40, mean_centered=True)
+# knn._sims = sims
+# knn._item_means = means_prime
+# knn._M = data.get_matrix()
+# knn._num_users, knn._num_items = data.get_matrix().shape
+
+with open('ens_knn.pkl', 'rb') as file:
+    data, ens_knn = pickle.load(file)
 
 app = Flask(__name__, '/templates')
 
@@ -28,17 +50,22 @@ def search(title):
 def empty_search():
     return (jsonify([]), SUCCESS_EMPTY)
 
-@app.route('/topn/<user_id>', methods=['GET'])
-def get_topn(user_id):
-    top_n = svd.top_n(int(user_id))
-    top_n = [data.index_to_title(index) for _, index in top_n]
-    return str(top_n)
+# @app.route('/topn/<user_id>', methods=['GET'])
+# def get_topn(user_id):
+#     top_n = svd.top_n(int(user_id))
+#     top_n = [data.index_to_title(index) for _, index in top_n]
+#     return str(top_n)
 
 @app.route('/recs', methods=['POST'])
 def recs():
     user_data = request.get_json()
     prefs = [(int(index), pref) for index, pref in user_data.items()]
-    top = svd.items_knn(prefs, n=10)
+    
+    # top = svd.items_knn(prefs, n=10)
+    
+    prefs = data.create_prefs(prefs)
+    top = ens_knn.top_n(-1, 10, prefs=prefs)
+    print(top)
     recs = [(index, data.index_to_id(index), data.index_to_title(index)) for _, index in top]
 
     return (jsonify(recs), SUCCESS_CODE)
