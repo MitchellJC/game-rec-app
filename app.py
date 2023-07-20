@@ -12,8 +12,8 @@ from flask import Flask, jsonify, render_template, request
 SUCCESS_CODE = 200
 SUCCESS_EMPTY = 204
 
-with open('model.pkl', 'rb') as file:
-    data, svd = pickle.load(file)
+# with open('model.pkl', 'rb') as file:
+#     data, svd = pickle.load(file)
 
 # # KNN
 # import numba as nb

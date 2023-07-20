@@ -254,7 +254,6 @@ class SVDBase():
     #     return top
     def items_knn(self, subjects, n=10):
         k = 10
-        top = []
         for i in range(self._num_items):
             # Get neighbours
             neighbs = []
@@ -268,7 +267,7 @@ class SVDBase():
             neighbs.sort(key=lambda x: x[0], reverse=True)
             neighbs = neighbs[:k]
 
-            
+            top = []
             # Compute rating
             a = 0
             b = 0
@@ -281,7 +280,6 @@ class SVDBase():
             top.append((pred, i))
 
         top = [(pred, i) for pred, i in top if i not in [j for j, pref in subjects]]
-        random.shuffle(top)
         top.sort(key=lambda x: x[0], reverse=True)
         top = top[:n]
 
