@@ -29,9 +29,7 @@ def empty_search():
 def recs():
     user_data = request.get_json()
     prefs = [(int(index), pref) for index, pref in user_data.items()]
-    
-    # top = svd.items_knn(prefs, n=10)
-    
+        
     prefs = data.create_prefs(prefs)
     top = ens_knn.top_n(-1, 10, prefs=prefs)
     print(top)
