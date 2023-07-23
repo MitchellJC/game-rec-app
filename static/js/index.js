@@ -154,6 +154,7 @@ async function generateRecs(event) {
     loadMsg.style.display = "none"; // TODO maybe add load until images fully done
     
     const header = document.createElement("h2");
+    header.style.display = "none";
     header.innerHTML = "Your Recommendations";
     recList.append(header);
     for (const i in results) {
@@ -161,7 +162,6 @@ async function generateRecs(event) {
         const id = String(results[i][1]);
         const title = results[i][2];
         
-        console.log(title + " " + id);
         const rec = document.createElement("li");
         rec.classList.add("rec");
 
@@ -205,6 +205,7 @@ async function generateRecs(event) {
             generateRecs(null);
         });
     }
+    header.style.display = "block";
 }
 
 addNewPref.addEventListener("click", addNewPrefField);
