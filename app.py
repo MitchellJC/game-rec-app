@@ -33,7 +33,6 @@ def recs():
         
     prefs = data.create_prefs(prefs)
     top = ens_knn.top_n(-1, 10, prefs=prefs)
-    print(top)
     recs = [(index, data.index_to_id(index), data.index_to_title(index)) for _, index in top]
 
     return (jsonify(recs), SUCCESS_CODE)
