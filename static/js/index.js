@@ -11,7 +11,8 @@ const prefs = document.getElementById("prefs");
 const addNewPref = document.getElementById("add-newpref");
 const clearAllButt = document.getElementById("clear-all-butt");
 
-const gameFields = {}
+const gameFields = {};
+let recs = [];
 
 /**
  * Refresh the search results for known games in the model. 
@@ -157,6 +158,7 @@ async function generateRecs(event) {
     header.style.display = "none";
     header.innerHTML = "Your Recommendations";
     recList.append(header);
+    recs = [];
     for (const i in results) {
         const index = results[i][0];
         const id = String(results[i][1]);
@@ -164,8 +166,11 @@ async function generateRecs(event) {
         
         const rec = document.createElement("li");
         rec.classList.add("rec");
+        rec.style.display = "none";
+        recs.push(rec);
 
         titleContainer = document.createElement("div");
+        titleContainer.classList.add("title-container");
         
         // Create title
         const titleSpan = document.createElement("span");
@@ -205,7 +210,13 @@ async function generateRecs(event) {
             generateRecs(null);
         });
     }
+
+    // Once done loading show recs
     header.style.display = "block";
+    for (const i in recs) {
+        const rec = recs[i];
+        rec.style.display = "flex";
+    }
 }
 
 addNewPref.addEventListener("click", addNewPrefField);
