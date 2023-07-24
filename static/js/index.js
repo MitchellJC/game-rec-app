@@ -151,8 +151,6 @@ async function generateRecs(event) {
     });
 
     const results = await response.json();
-    loader.style.display = "none";
-    loadMsg.style.display = "none"; // TODO maybe add load until images fully done
     
     const header = document.createElement("h2");
     header.style.display = "none";
@@ -212,6 +210,8 @@ async function generateRecs(event) {
     }
 
     // Once done loading show recs
+    loader.style.display = "none";
+    loadMsg.style.display = "none";
     header.style.display = "block";
     for (const i in recs) {
         const rec = recs[i];
