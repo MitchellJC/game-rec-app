@@ -199,13 +199,15 @@ async function generateRecs(event) {
             dislikeRadio = gameField.getElementsByClassName("dislike-radio")[0];
 
             selectOption(gameField, index, title);
+            gameField.pref = 0;
             dislikeRadio.checked = true;
-            generateRecs(null);
+
+            rec.remove()
         });
         likeButt.addEventListener("click", () => {
             gameField = addNewPrefField();
             selectOption(gameField, index, title);
-            generateRecs(null);
+            rec.remove()
         });
     }
 
