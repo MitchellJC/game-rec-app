@@ -15,7 +15,10 @@ class GameField extends HTMLElement {
             <button type="button" class="rem-pref">&#10005</button>
 
             <label for="game-title${this.id_}">Game title:</label>
-            <input type="text" name="game-title" id="game-title${this.id_}" class="game-title" required>
+            <div class="search-container">
+                <input type="text" name="game-title" id="game-title${this.id_}" class="game-title" required>
+                <div class="search-result"></div>
+            </div>
             
             <div class="pref-box">
                 <div class="label-radio-cont">
@@ -27,7 +30,7 @@ class GameField extends HTMLElement {
                     <input class="like-radio" type="radio" name="like-box${this.id_}" id="like-option${this.id_}" value="like" checked>
                 </div>
             </div>
-           <div class="search-result"></div>
+           
         </div>`;
     }
 

@@ -21,11 +21,12 @@ let recs = [];
  */
 async function refreshSearch(gameField) {
     gameField.gameId = null;
-    let width = gameField.offsetWidth;
-
+    
     const gameTitle = gameField.getElementsByClassName("game-title").item(0);
+    const searchContainer = gameField.getElementsByClassName("search-container").item(0);
     const searchResult = gameField.getElementsByClassName("search-result").item(0);
 
+    let width = searchContainer.offsetWidth;
     searchResult.style.width = String(width) + "px"
 
     gameTitle.classList.remove("has-selected");
