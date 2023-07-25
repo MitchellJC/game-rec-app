@@ -6,6 +6,7 @@ body {
     flex-direction: column;
     margin: 0;
     color: lightblue;
+    font-size: 16px;
 }
 
 h1 {
@@ -25,10 +26,17 @@ h2 {
 
 input {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+}
+
+label {
+    vertical-align: middle;
+    text-align: center;
 }
 
 button {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
     user-select: none;
 }
 
@@ -73,6 +81,7 @@ footer {
     padding: 1rem;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: .5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -159,6 +168,7 @@ input[type=text] {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    vertical-align: center;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     background-image: linear-gradient(to bottom right, black, midnightblue);
@@ -167,8 +177,21 @@ input[type=text] {
     box-shadow: 0.2rem 0.2rem black;
 }
 
+/* On recommendations */
 .pref-buttons {
     margin-top: 0.5rem;
+}
+
+/* On gamefields */
+.pref-box {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.label-radio-cont {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-evenly;
 }
 
 .rec-image {
@@ -182,8 +205,22 @@ input[type=text] {
   }
 
   @media only screen and (max-width: 600px) {
+    .margin-container {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
     .game-field {
+        display: flex;
         flex-direction: column;
+        width: 100%;;
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+
+    .game-title {
+        width: 100%;
     }
 
     .rec {
@@ -198,5 +235,11 @@ input[type=text] {
         justify-content: center;
         align-items: center;
         text-align: center;
+    }
+
+    .rem-pref {
+        width: 100%;
+        align-self: stretch;
+        flex-grow: 1;
     }
   }
