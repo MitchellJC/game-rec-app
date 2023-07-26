@@ -1,5 +1,3 @@
-import mysql.connector
-import json
 import pickle
 import base64
 import os
