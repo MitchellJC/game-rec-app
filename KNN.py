@@ -1,4 +1,3 @@
-from scipy.sparse import csr_array, lil_array
 import numba as nb
 from numba import jit
 import numpy as np
