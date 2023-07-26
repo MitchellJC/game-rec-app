@@ -117,8 +117,8 @@ class RecData:
         title = title.lower()
         results = []
         for key, value in self._index_to_title.items():
-            value = value.lower()
-            if title in value:
+            value_lower = value.lower()
+            if title in value_lower:
                 results.append((value, key))
                 
         return results
