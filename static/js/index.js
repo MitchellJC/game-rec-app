@@ -13,6 +13,7 @@ const clearAllButt = document.getElementById("clear-all-butt");
 
 const gameFields = {};
 let recs = [];
+let gettingRecs = false;
 
 /**
  * Refresh the search results for known games in the model. 
@@ -110,7 +111,12 @@ async function generateRecs(event) {
     if (event != null) {
         event.preventDefault();
     }
-
+    
+    if (gettingRecs == true) {
+        return;
+    }
+    gettingRecs = true;
+    
     if (Object.keys(gameFields).length == 0) {
         noPrefMsg.style.display = "block";
         return;
@@ -220,6 +226,8 @@ async function generateRecs(event) {
         const rec = recs[i];
         rec.style.display = "flex";
     }
+    
+    gettingRecs = false;
 }
 
 addNewPref.addEventListener("click", addNewPrefField);
