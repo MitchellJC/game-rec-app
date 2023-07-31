@@ -119,6 +119,7 @@ async function generateRecs(event) {
     
     if (Object.keys(gameFields).length == 0) {
         noPrefMsg.style.display = "block";
+        gettingRecs = false;
         return;
     } else {
         noPrefMsg.style.display = "none";
@@ -138,6 +139,7 @@ async function generateRecs(event) {
             alert("Preference not selected.");
             prefs.scroll({'top': top});
 
+            gettingRecs = false;
             return;
         }
 
