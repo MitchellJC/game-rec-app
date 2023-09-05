@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import random
 
 @jit(nopython=True)
-def compute_sims(item_ratings, num_users, num_items, means=None) -> np.Array:
+def compute_sims(item_ratings, num_users, num_items, means=None) -> np.ndarray:
     sims = np.zeros((num_items, num_items))
 
     for i in range(num_items):
@@ -116,7 +116,7 @@ class ItemKNN:
         self._item_means = None
         self._iuf = iuf
 
-    def fit(self, M: np.Array) -> None:
+    def fit(self, M: np.ndarray) -> None:
         """Train the model using utility matrix M.
 
         Parameters:
@@ -132,7 +132,7 @@ class ItemKNN:
         self._sims = compute_sims(self._item_ratings, self._num_users, 
                                   self._num_items, means=self._item_means)
 
-    def top_n(self, user: int, n: int, prefs: np.Array = None) -> (
+    def top_n(self, user: int, n: int, prefs: np.ndarray = None) -> (
             list[tuple[float, int]]):
         """Return the top-n recommendations for user.
         
@@ -155,7 +155,7 @@ class ItemKNN:
         top = top_n(n, self._sims, prefs, self._num_items, self._k, iufs=self._iufs)
         return top
 
-    def _store_rating_pairs(self, M: np.Array) -> None:
+    def _store_rating_pairs(self, M: np.ndarray) -> None:
         print("Storing ratings in dictionary...")
         # Type defs
         index_type = nb.types.int64
@@ -188,7 +188,7 @@ class ItemKNN:
 
         print("Done storing in dictionary.")
 
-    def _store_item_means(self, M: np.Array) -> None:
+    def _store_item_means(self, M: np.ndarray) -> None:
         print("Computing item means...")
         index_type = nb.types.int64
         rating_type = nb.types.float64
@@ -221,7 +221,7 @@ class ContentKNN:
         """
         self._k = k
 
-    def fit(self, X: np.Array) -> None:
+    def fit(self, X: np.ndarray) -> None:
         """Train the model using feature array X.
 
         Parameters:
@@ -231,7 +231,7 @@ class ContentKNN:
         self._sims = cosine_similarity(X)
         self._num_items = self._sims.shape[0]
 
-    def top_n(self, user: int, n: int, prefs: np.Array = None) -> list[
+    def top_n(self, user: int, n: int, prefs: np.ndarray = None) -> list[
         tuple[float, int]]:
         """Return the top-n recommendations for user.
         
@@ -263,7 +263,7 @@ class EnsembleKNN:
         """
         self._k = k
 
-    def set_sims(self, sim_pairs: list[tuple[np.Array, float]]) -> None:
+    def set_sims(self, sim_pairs: list[tuple[np.ndarray, float]]) -> None:
         """Set the similarity from each neighbourhood model.
         
         Parameters:
@@ -274,7 +274,7 @@ class EnsembleKNN:
         self._num_items = sim_pairs[0][0].shape[0]
         self._sim_pairs = sim_pairs
 
-    def top_n(self, user: int, n: int, prefs: np.Array = None):
+    def top_n(self, user: int, n: int, prefs: np.ndarray = None):
         """Return the top-n recommendations for user.
         
         Parameters:
