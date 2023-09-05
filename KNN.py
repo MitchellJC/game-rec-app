@@ -244,7 +244,7 @@ class ContentKNN:
         Returns:
             List of recommendations in the form (prediction, item_id)
         """
-        if not prefs:
+        if prefs == None:
             print("Please give prefs array.")
             return
         prefs = prefs.tocsr()
@@ -286,7 +286,7 @@ class EnsembleKNN:
         Returns:
             List of recommendations in the form (prediction, item_id)
         """
-        if not prefs:
+        if prefs == None:
             print("Please give prefs array.")
             return
         prefs = prefs.tocsr()

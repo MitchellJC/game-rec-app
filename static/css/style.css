@@ -25,8 +25,22 @@ h2 {
 }
 
 input {
+    /* Reset */
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
+    background-color: white;
+    padding: .25rem;
+    border-radius: 0;
+    border-width: .1rem;
+    color: black;
 }
 
 label {
@@ -35,9 +49,32 @@ label {
 }
 
 button {
+    /* Reset */
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
     user-select: none;
+
+    background-color: white;
+    padding: .25rem;
+    border-radius: 0;
+    border-width: .1rem;
+    color: black;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+input:hover {
+    cursor: pointer;
 }
 
 a {
@@ -87,8 +124,12 @@ footer {
     margin-bottom: 0.5rem;
 }
 
+#add-newpref {
+    width: 40px;
+}
+
 .rem-pref {
-    width: 26px;
+    width: 40px;
 }
 
 .simple-centred {
@@ -259,7 +300,7 @@ input[type=text] {
     }
 
     .rem-pref {
-        width: 100%;
+        margin-left: 1rem;
         align-self: stretch;
         flex-grow: 1;
         flex-shrink: 0;
