@@ -136,7 +136,9 @@ async function generateRecs(event) {
             const top = gameField.offsetTop;
 
             gameTitle.classList.add("not-selected-warn");
-            alert("Preference not selected.");
+            alert("Preference not selected. Please ensure all preferences are" + 
+            " selected from the search list. This is indicated by title for" + 
+            " preference having a blue outline");
             prefs.scroll({'top': top});
 
             gettingRecs = false;

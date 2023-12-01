@@ -180,7 +180,7 @@ input[type=text]:hover {
 .has-selected {
     background-color: var(--butt-black);
     /* background-color: #181818; */
-    border:1px solid green;
+    border:1px solid midnightblue;
 }
 
 .not-selected-warn {
