@@ -147,8 +147,8 @@ async function generateRecs(event) {
         prefData[gameIndex] = pref;
     }
 
+    // Load recs
     recList.innerHTML = "";
-
     loader.style.display = "block";
     loadMsg.style.display = "block";
     const response = await fetch("/recs", {
@@ -161,6 +161,7 @@ async function generateRecs(event) {
 
     const results = await response.json();
     
+    // Create rec elements
     const header = document.createElement("h2");
     header.style.display = "none";
     header.innerHTML = "Your Recommendations";
@@ -236,11 +237,15 @@ addNewPref.addEventListener("click", addNewPrefField);
 prefForm.addEventListener("submit", generateRecs);
 
 clearAllButt.addEventListener("click", () => {
-    if (confirm("Are you sure you want to clear your preferences?") == true) {
+    if (confirm("Are you sure you want to clear your preferences?")) {
+        // Clear prefs
         for (const i in gameFields) {
             let gameField = gameFields[i];
             gameField.remove();
             delete gameFields[i];
         }
+
+        // Clear recs
+        recList.innerHTML = '';
     }
 });
