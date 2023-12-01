@@ -1,16 +1,26 @@
+:root {
+    --off-white: #FAF9F6;
+    --butt-black: #353935;
+  }
+
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-image: url("../images/webb-dark.png");
+    background-color: #1d1a22;
+    background-color: #1d1a22;
+    background-color: #191919;
+    background-color: #2e2e2f;
+    background-color: #181818;
+    background-image: url("data:image/svg+xml,%3Csvg width='76' height='18' viewBox='0 0 76 18' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M32 18c-2.43-1.824-4-4.73-4-8 0-4.418-3.582-8-8-8H0V0h20c5.523 0 10 4.477 10 10 0 4.418 3.582 8 8 8h20c4.418 0 8-3.582 8-8 0-5.523 4.477-10 10-10v2c-4.418 0-8 3.582-8 8 0 3.27-1.57 6.176-4 8H32zM64 0c-1.67 1.256-3.748 2-6 2H38c-2.252 0-4.33-.744-6-2h32z' fill='%23828285' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
-    color: lightblue;
+    color: var(--off-white);
     font-size: 16px;
 }
 
 h1 {
-    color: white;
+    color: var(--off-white);
     text-align: center;
 }
 
@@ -21,7 +31,7 @@ h1 {
 }
 
 h2 {
-    color: white;
+    color: var(--off-white);
 }
 
 input {
@@ -36,11 +46,11 @@ input {
 
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
-    background-color: white;
+    background-color: var(--butt-black);
     padding: .25rem;
     border-radius: 0;
     border-width: .1rem;
-    color: black;
+    color: var(--off-white);
 }
 
 label {
@@ -62,11 +72,11 @@ button {
     font-size: 16px;
     user-select: none;
 
-    background-color: white;
+    background-color: var(--butt-black);
     padding: .25rem;
     border-radius: 0;
     border-width: .1rem;
-    color: black;
+    color: var(--off-white);
 }
 
 button:hover {
@@ -78,12 +88,12 @@ input:hover {
 }
 
 a {
-    color: lightblue;
+    color: var(--off-white);
     text-decoration: none;
 }
 
 a:hover {
-    color: white;
+    color: lightblue;
 }
 
 a:active {
@@ -97,7 +107,8 @@ ol {
 
 header {
     display: flex;
-    background-color: midnightblue;
+    /* background-color: midnightblue; */
+    background-image: linear-gradient(to bottom right, black, midnightblue);
     padding: 1rem;
     gap: 1rem;
     
@@ -109,7 +120,7 @@ footer {
     align-items: center;
     margin-top: auto;
     padding: 1rem;
-    background-color: midnightblue;
+    background-image: linear-gradient(to bottom right, midnightblue, black);
     color: rgb(140, 139, 139);
 }
 
@@ -145,7 +156,8 @@ footer {
     padding: 1rem;
     width: 80%;
     max-width: 100ch;
-    border-style: double;
+    border-width: 0.05rem;
+    border-style: solid;
     background-color: rgb(28, 28, 28);
 }
 
@@ -162,7 +174,7 @@ input[type=text] {
   }
 
 .has-selected {
-    background-color: buttonface;
+    background-color: var(--butt-black);
     border:3px outset grey;
 }
 
@@ -217,7 +229,8 @@ input[type=text] {
     vertical-align: center;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    background-image: linear-gradient(to bottom right, black, midnightblue);
+    /* background-image: linear-gradient(to bottom right, black, midnightblue); */
+    background-color: rgb(12, 12, 51);
     padding: 0.5rem;
     gap: .5rem;
     box-shadow: 0.2rem 0.2rem black;
