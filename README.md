@@ -1,6 +1,6 @@
 ## Activating Environment
 ```bash
-.venv\Scripts\activate
+source .venv/Scripts/activate
 ```
 
 ## Building Docker
