@@ -7,6 +7,8 @@ from flask import Flask, jsonify, render_template, request
 SUCCESS_CODE = 200
 SUCCESS_EMPTY = 204
 
+WALLPAPER_ENGINE_INDEX = 617
+
 with open('ens_knn.pkl', 'rb') as file:
     data, ens_knn = pickle.load(file)
 
@@ -30,8 +32,11 @@ def recs():
     prefs = [(int(index), pref) for index, pref in user_data.items()]
         
     prefs = data.create_prefs(prefs)
-    top = ens_knn.top_n(-1, 10, prefs=prefs)
-    recs = [(index, data.index_to_id(index), data.index_to_title(index)) for _, index in top]
+    top = ens_knn.top_n(-1, 20, prefs=prefs)
+    recs = [(index, data.index_to_id(index), data.index_to_title(index)) 
+            for _, index in top if index != WALLPAPER_ENGINE_INDEX]
+    recs = recs[:10]
+    print(recs)
 
     return (jsonify(recs), SUCCESS_CODE)
 
