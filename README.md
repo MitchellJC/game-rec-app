@@ -12,7 +12,7 @@ docker compose -f docker-compose.dev.yml up --build
 ## Making Changes to Prod
 Open bash terminal and run the following to sign in
 ```bash
-heroku open \
+heroku open -a dry-eyrie-18912 \
 & heroku container:login
 ```
 To push and release changes run.
